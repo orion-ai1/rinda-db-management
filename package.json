@@ -571,7 +571,7 @@
     "watch": "node esbuild.mjs --watch",
     "lint": "eslint src test esbuild.mjs",
     "test": "tsx --test test/unit/*.test.ts",
-    "package": "npm run clean && npm run check && npm run lint && npm test && npm run compile && vsce package --no-dependencies --allow-missing-repository --no-rewrite-relative-links"
+    "package": "npm run clean && npm run check && npm run lint && npm test && npm run compile && vsce package --no-dependencies --allow-missing-repository"
   },
   "dependencies": {
     "mysql2": "3.24.5"
