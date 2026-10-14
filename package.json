@@ -2,7 +2,7 @@
   "name": "rinda-db-management",
   "displayName": "Rinda MySQL",
   "description": "在 VS Code 中安全地连接、浏览、查询、编辑、导出、受控恢复并维护 MySQL 数据库。",
-  "version": "0.3.19",
+  "version": "0.3.20",
   "publisher": "wapai-studio",
   "repository": {
     "type": "git",
