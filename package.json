@@ -1,0 +1,589 @@
+{
+  "name": "rinda-db-management",
+  "displayName": "Rinda MySQL",
+  "description": "在 VS Code 中安全地连接、浏览、查询、编辑、导出、受控恢复并维护 MySQL 数据库。",
+  "version": "0.3.19",
+  "publisher": "wapai-studio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orion-ai1/rinda-db-management"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "mysql",
+    "mariadb",
+    "database",
+    "sql",
+    "navicat",
+    "processlist",
+    "table-designer",
+    "db-manager"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:sql",
+    "onView:rindaMysql.connections",
+    "onCommand:rindaMysql.addConnection",
+    "onCommand:rindaMysql.openQuery",
+    "onCommand:rindaMysql.executeQuery",
+    "onCommand:rindaMysql.runSelectedSql",
+    "onCommand:rindaMysql.explainQuery",
+    "onCommand:rindaMysql.createTable",
+    "onCommand:rindaMysql.designTable",
+    "onCommand:rindaMysql.createUser",
+    "onCommand:rindaMysql.createQueryFile",
+    "onCommand:rindaMysql.exportDatabaseSql",
+    "onCommand:rindaMysql.importDatabaseSql",
+    "onCommand:rindaMysql.exportTableSql",
+    "onCommand:rindaMysql.exportTableCsv",
+    "onCommand:rindaMysql.restoreSqlPackage",
+    "onCommand:rindaMysql.truncateTable",
+    "onCommand:rindaMysql.dropTable",
+    "onCommand:rindaMysql.dropDatabase",
+    "onCommand:rindaMysql.createDatabase",
+    "onCommand:rindaMysql.showTableDdl",
+    "onCommand:rindaMysql.showProcesslist"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "rindaMysql",
+          "title": "Rinda MySQL",
+          "icon": "media/database.svg"
+        }
+      ]
+    },
+    "views": {
+      "rindaMysql": [
+        {
+          "id": "rindaMysql.connections",
+          "name": "连接与对象",
+          "contextualTitle": "Rinda MySQL"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "rindaMysql.connections",
+        "contents": "尚未配置 MySQL 连接。\n[新建连接](command:rindaMysql.addConnection)\n\n密码仅保存到 VS Code SecretStorage。",
+        "when": "rindaMysql.hasConnections == false"
+      }
+    ],
+    "commands": [
+      {
+        "command": "rindaMysql.addConnection",
+        "title": "Rinda MySQL: 新建连接",
+        "icon": "$(add)"
+      },
+      {
+        "command": "rindaMysql.editConnection",
+        "title": "Rinda MySQL: 编辑连接",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "rindaMysql.deleteConnection",
+        "title": "Rinda MySQL: 删除连接",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "rindaMysql.testConnection",
+        "title": "Rinda MySQL: 测试连接",
+        "icon": "$(pulse)"
+      },
+      {
+        "command": "rindaMysql.connect",
+        "title": "Rinda MySQL: 连接",
+        "icon": "$(plug)"
+      },
+      {
+        "command": "rindaMysql.disconnect",
+        "title": "Rinda MySQL: 断开连接",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "rindaMysql.refresh",
+        "title": "Rinda MySQL: 刷新",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "rindaMysql.openQuery",
+        "title": "Rinda MySQL: 新建 SQL 查询",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "rindaMysql.executeQuery",
+        "title": "Rinda MySQL: 执行 SQL",
+        "icon": "$(run)"
+      },
+      {
+        "command": "rindaMysql.runSelectedSql",
+        "title": "Rinda MySQL: 执行选中的 SQL",
+        "icon": "$(run)"
+      },
+      {
+        "command": "rindaMysql.explainQuery",
+        "title": "Rinda MySQL: 执行计划分析 (EXPLAIN)",
+        "icon": "$(info)"
+      },
+      {
+        "command": "rindaMysql.cancelQuery",
+        "title": "Rinda MySQL: 取消当前查询",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "rindaMysql.previewTable",
+        "title": "Rinda MySQL: 预览表数据"
+      },
+      {
+        "command": "rindaMysql.exportDatabaseSql",
+        "title": "导出整个数据库 (SQL)...",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "rindaMysql.importDatabaseSql",
+        "title": "导入 SQL 文件...",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "rindaMysql.exportTableSql",
+        "title": "Rinda MySQL: 导出表为 SQL",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "rindaMysql.exportTableCsv",
+        "title": "Rinda MySQL: 导出表为 CSV",
+        "icon": "$(file-text)"
+      },
+      {
+        "command": "rindaMysql.restoreSqlPackage",
+        "title": "Rinda MySQL: 从受控 SQL 包恢复",
+        "icon": "$(history)"
+      },
+      {
+        "command": "rindaMysql.truncateTable",
+        "title": "Rinda MySQL: 安全清空此表 (TRUNCATE)",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "rindaMysql.dropTable",
+        "title": "Rinda MySQL: 安全删除此表 (DROP TABLE)",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "rindaMysql.dropDatabase",
+        "title": "Rinda MySQL: 安全删除此数据库 (DROP DATABASE)",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "rindaMysql.createDatabase",
+        "title": "Rinda MySQL: 新建数据库",
+        "icon": "$(add)"
+      },
+      {
+        "command": "rindaMysql.createTable",
+        "title": "Rinda MySQL: 新建表",
+        "icon": "$(add)"
+      },
+      {
+        "command": "rindaMysql.designTable",
+        "title": "Rinda MySQL: 设计表",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "rindaMysql.showTableDdl",
+        "title": "Rinda MySQL: 查看建表 DDL",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "rindaMysql.createUser",
+        "title": "Rinda MySQL: 创建用户",
+        "icon": "$(add)"
+      },
+      {
+        "command": "rindaMysql.refreshUsers",
+        "title": "Rinda MySQL: 刷新用户",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "rindaMysql.createQueryFile",
+        "title": "Rinda MySQL: 新建查询",
+        "icon": "$(add)"
+      },
+      {
+        "command": "rindaMysql.refreshQueries",
+        "title": "Rinda MySQL: 刷新查询",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "rindaMysql.refreshTables",
+        "title": "Rinda MySQL: 刷新表",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "rindaMysql.createView",
+        "title": "Rinda MySQL: 新建视图",
+        "icon": "$(add)"
+      },
+      {
+        "command": "rindaMysql.refreshViews",
+        "title": "Rinda MySQL: 刷新视图",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "rindaMysql.createFunction",
+        "title": "Rinda MySQL: 新建函数",
+        "icon": "$(add)"
+      },
+      {
+        "command": "rindaMysql.refreshFunctions",
+        "title": "Rinda MySQL: 刷新函数",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "rindaMysql.createProcedure",
+        "title": "Rinda MySQL: 新建存储过程",
+        "icon": "$(add)"
+      },
+      {
+        "command": "rindaMysql.refreshProcedures",
+        "title": "Rinda MySQL: 刷新存储过程",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "rindaMysql.deleteQueryFile",
+        "title": "Rinda MySQL: 删除查询文件",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "rindaMysql.showProcesslist",
+        "title": "Rinda MySQL: 服务器进程列表 (Processlist)",
+        "icon": "$(pulse)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "rindaMysql.addConnection",
+          "when": "view == rindaMysql.connections",
+          "group": "navigation@1"
+        },
+        {
+          "command": "rindaMysql.importDatabaseSql",
+          "when": "view == rindaMysql.connections",
+          "group": "navigation@2"
+        },
+        {
+          "command": "rindaMysql.refresh",
+          "when": "view == rindaMysql.connections",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "rindaMysql.connect",
+          "when": "view == rindaMysql.connections && viewItem == connectionDisconnected",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.disconnect",
+          "when": "view == rindaMysql.connections && viewItem == connectionConnected",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.openQuery",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "rindaMysql.testConnection",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "rindaMysql.editConnection",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "rindaMysql.deleteConnection",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "navigation@4"
+        },
+        {
+          "command": "rindaMysql.createDatabase",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "manage@1"
+        },
+        {
+          "command": "rindaMysql.showProcesslist",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "manage@2"
+        },
+        {
+          "command": "rindaMysql.createDatabase",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "inline@2"
+        },
+        {
+          "command": "rindaMysql.showProcesslist",
+          "when": "view == rindaMysql.connections && viewItem == connectionConnected",
+          "group": "inline@3"
+        },
+        {
+          "command": "rindaMysql.restoreSqlPackage",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "transfer@1"
+        },
+        {
+          "command": "rindaMysql.importDatabaseSql",
+          "when": "view == rindaMysql.connections && viewItem =~ /connection/",
+          "group": "transfer@2"
+        },
+        {
+          "command": "rindaMysql.exportDatabaseSql",
+          "when": "view == rindaMysql.connections && viewItem == database",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.importDatabaseSql",
+          "when": "view == rindaMysql.connections && viewItem == database",
+          "group": "inline@2"
+        },
+        {
+          "command": "rindaMysql.createDatabase",
+          "when": "view == rindaMysql.connections && viewItem == database",
+          "group": "manage@0"
+        },
+        {
+          "command": "rindaMysql.createTable",
+          "when": "view == rindaMysql.connections && viewItem == database",
+          "group": "manage@1"
+        },
+        {
+          "command": "rindaMysql.exportDatabaseSql",
+          "when": "view == rindaMysql.connections && viewItem == database",
+          "group": "transfer@1"
+        },
+        {
+          "command": "rindaMysql.importDatabaseSql",
+          "when": "view == rindaMysql.connections && viewItem == database",
+          "group": "transfer@2"
+        },
+        {
+          "command": "rindaMysql.dropDatabase",
+          "when": "view == rindaMysql.connections && viewItem == database",
+          "group": "danger@1"
+        },
+        {
+          "command": "rindaMysql.designTable",
+          "when": "view == rindaMysql.connections && viewItem == table",
+          "group": "manage@1"
+        },
+        {
+          "command": "rindaMysql.showTableDdl",
+          "when": "view == rindaMysql.connections && (viewItem == table || viewItem == view)",
+          "group": "manage@2"
+        },
+        {
+          "command": "rindaMysql.exportTableSql",
+          "when": "view == rindaMysql.connections && viewItem == table",
+          "group": "export@1"
+        },
+        {
+          "command": "rindaMysql.exportTableCsv",
+          "when": "view == rindaMysql.connections && viewItem == table",
+          "group": "export@2"
+        },
+        {
+          "command": "rindaMysql.truncateTable",
+          "when": "view == rindaMysql.connections && viewItem == table",
+          "group": "danger@1"
+        },
+        {
+          "command": "rindaMysql.dropTable",
+          "when": "view == rindaMysql.connections && viewItem == table",
+          "group": "danger@2"
+        },
+        {
+          "command": "rindaMysql.createUser",
+          "when": "view == rindaMysql.connections && viewItem == usersGroup",
+          "group": "inline@2"
+        },
+        {
+          "command": "rindaMysql.refreshUsers",
+          "when": "view == rindaMysql.connections && viewItem == usersGroup",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.createQueryFile",
+          "when": "view == rindaMysql.connections && viewItem == queryGroup",
+          "group": "inline@2"
+        },
+        {
+          "command": "rindaMysql.refreshQueries",
+          "when": "view == rindaMysql.connections && viewItem == queryGroup",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.createTable",
+          "when": "view == rindaMysql.connections && viewItem == tableGroup",
+          "group": "inline@2"
+        },
+        {
+          "command": "rindaMysql.refreshTables",
+          "when": "view == rindaMysql.connections && viewItem == tableGroup",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.createView",
+          "when": "view == rindaMysql.connections && viewItem == viewGroup",
+          "group": "inline@2"
+        },
+        {
+          "command": "rindaMysql.refreshViews",
+          "when": "view == rindaMysql.connections && viewItem == viewGroup",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.createFunction",
+          "when": "view == rindaMysql.connections && viewItem == functionGroup",
+          "group": "inline@2"
+        },
+        {
+          "command": "rindaMysql.refreshFunctions",
+          "when": "view == rindaMysql.connections && viewItem == functionGroup",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.createProcedure",
+          "when": "view == rindaMysql.connections && viewItem == procedureGroup",
+          "group": "inline@2"
+        },
+        {
+          "command": "rindaMysql.refreshProcedures",
+          "when": "view == rindaMysql.connections && viewItem == procedureGroup",
+          "group": "inline@1"
+        },
+        {
+          "command": "rindaMysql.deleteQueryFile",
+          "when": "view == rindaMysql.connections && viewItem == queryFile",
+          "group": "inline@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "rindaMysql.runSelectedSql",
+          "when": "editorTextFocus && editorLangId == sql && editorHasSelection",
+          "group": "1_modification@1"
+        },
+        {
+          "command": "rindaMysql.explainQuery",
+          "when": "editorTextFocus && editorLangId == sql",
+          "group": "1_modification@2"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "rindaMysql.executeQuery",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "editorTextFocus && editorLangId == sql"
+      },
+      {
+        "command": "rindaMysql.runSelectedSql",
+        "key": "ctrl+r",
+        "mac": "cmd+r",
+        "when": "editorTextFocus && editorLangId == sql"
+      },
+      {
+        "command": "rindaMysql.explainQuery",
+        "key": "ctrl+alt+x",
+        "mac": "cmd+alt+x",
+        "when": "editorTextFocus && editorLangId == sql"
+      }
+    ],
+    "configuration": {
+      "title": "Rinda MySQL",
+      "properties": {
+        "rindaMysql.queryTimeout": {
+          "type": "number",
+          "default": 30000,
+          "minimum": 1000,
+          "maximum": 300000,
+          "description": "查询超时时间（毫秒）。"
+        },
+        "rindaMysql.maxRows": {
+          "type": "number",
+          "default": 500,
+          "minimum": 10,
+          "maximum": 500,
+          "description": "单次结果最多显示的行数。"
+        },
+        "rindaMysql.mysqldumpPath": {
+          "type": "string",
+          "default": "",
+          "description": "mysqldump 可执行文件的绝对路径；留空时从 PATH 和常见安装目录探测。"
+        },
+        "rindaMysql.mysqlPath": {
+          "type": "string",
+          "default": "",
+          "description": "mysql 客户端可执行文件的绝对路径；留空时从 PATH 和常见安装目录探测。"
+        },
+        "rindaMysql.csvIncludeBom": {
+          "type": "boolean",
+          "default": false,
+          "description": "CSV 导出是否写入 UTF-8 BOM，以提高部分电子表格软件的兼容性。"
+        },
+        "rindaMysql.protectedDatabases": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "永久禁止通过扩展执行 DROP DATABASE 的数据库名列表（忽略大小写）。系统库和连接的默认数据库始终额外受到保护。"
+        },
+        "rindaMysql.storageDirectory": {
+          "type": "string",
+          "default": ".rinda",
+          "description": "项目内保存查询 SQL 和导出文件的隐藏文件夹相对路径（默认 .rinda）。"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "check": "tsc --noEmit",
+    "compile": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "lint": "eslint src test esbuild.mjs",
+    "test": "tsx --test test/unit/*.test.ts",
+    "package": "npm run clean && npm run check && npm run lint && npm test && npm run compile && vsce package --no-dependencies --allow-missing-repository --no-rewrite-relative-links"
+  },
+  "dependencies": {
+    "mysql2": "3.24.5"
+  },
+  "devDependencies": {
+    "@types/node": "18.19.130",
+    "@types/vscode": "1.85.0",
+    "@vscode/vsce": "4.0.0",
+    "esbuild": "0.28.2",
+    "eslint": "10.12.0",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2"
+  }
+}

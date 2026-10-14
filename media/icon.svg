@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="45%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+
+    <!-- Cylinder Plate Gradient Top -->
+    <linearGradient id="plateTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+
+    <!-- Cylinder Body Gradient -->
+    <linearGradient id="cylinderBody" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="25%" stop-color="#38bdf8"/>
+      <stop offset="65%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#075985"/>
+    </linearGradient>
+
+    <!-- Cylinder 2 Body Gradient -->
+    <linearGradient id="cylinderBody2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0369a1"/>
+      <stop offset="30%" stop-color="#38bdf8"/>
+      <stop offset="70%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+
+    <!-- Accent Glow Gradient -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
+    <!-- Internal shadow filter inside the canvas -->
+    <filter id="stackShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#020617" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded squircle (fills 256x256 cleanly) -->
+  <rect x="0" y="0" width="256" height="256" rx="54" ry="54" fill="url(#bgGrad)"/>
+  <!-- Subtle inner border highlight -->
+  <rect x="1.5" y="1.5" width="253" height="253" rx="52.5" ry="52.5" fill="none" stroke="#7dd3fc" stroke-width="2.5" stroke-opacity="0.3"/>
+
+  <!-- Database Stack Group -->
+  <g filter="url(#stackShadow)">
+    
+    <!-- === Tier 3 (Bottom) === -->
+    <path d="M64 146 v28 c0 17 28.6 30 64 30 s64 -13 64 -30 v-28 c-13 12 -36 18 -64 18 s-51 -6 -64 -18 Z" fill="url(#cylinderBody)"/>
+    <ellipse cx="128" cy="146" rx="64" ry="22" fill="#0369a1"/>
+    <ellipse cx="128" cy="144" rx="64" ry="22" fill="url(#plateTop)"/>
+
+    <!-- === Tier 2 (Middle) === -->
+    <path d="M64 110 v28 c0 17 28.6 30 64 30 s64 -13 64 -30 v-28 c-13 12 -36 18 -64 18 s-51 -6 -64 -18 Z" fill="url(#cylinderBody2)"/>
+    <ellipse cx="128" cy="110" rx="64" ry="22" fill="#0284c7"/>
+    <ellipse cx="128" cy="108" rx="64" ry="22" fill="url(#plateTop)"/>
+
+    <!-- === Tier 1 (Top) === -->
+    <path d="M64 74 v28 c0 17 28.6 30 64 30 s64 -13 64 -30 v-28 c-13 12 -36 18 -64 18 s-51 -6 -64 -18 Z" fill="url(#cylinderBody)"/>
+    <ellipse cx="128" cy="72" rx="64" ry="22" fill="url(#plateTop)"/>
+    <ellipse cx="128" cy="70" rx="54" ry="17" fill="#7dd3fc" fill-opacity="0.6"/>
+
+    <!-- Indicator Status Dots -->
+    <circle cx="88" cy="166" r="3.5" fill="#34d399"/>
+    <circle cx="88" cy="130" r="3.5" fill="#38bdf8"/>
+    <circle cx="88" cy="94"  r="3.5" fill="#fbbf24"/>
+
+    <!-- Lightning Accent Badge overlay on bottom right -->
+    <circle cx="174" cy="172" r="25" fill="#0f172a" stroke="#fbbf24" stroke-width="2.5"/>
+    <path d="M178 153 l-13 19 h9 l-4 17 15 -21 h-9 l4 -15 Z" fill="url(#accentGrad)"/>
+  </g>
+</svg>
